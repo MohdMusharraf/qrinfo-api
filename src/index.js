@@ -13,7 +13,9 @@ dotenv.config({ path: './config.env'});
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors({
-    origin: "https://qr-info-client.vercel.app/"
+    origin: ["https://qr-info-client.vercel.app/"],
+    methods: ["GET", "POST"],
+    credentials: true
 }));
 
 app.get("/", (req, res) => {
