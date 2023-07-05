@@ -6,29 +6,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import QRCode from "qrcode";
 
-const allowCors = (fn) => async (req, res) => {
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  // another common pattern
-  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-  );
-  if (req.method === "OPTIONS") {
-    res.status(200).end();
-    return;
-  }
-  return await fn(req, res);
-};
-
 const server = http.createServer(app);
 
-dotenv.config({ path: "./config.env" });
+dotenv.config({ path: './config.env'});
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
@@ -74,7 +54,7 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-app.get("/users", allowCors((req, res) => {
+app.get("/users", (req, res) => {
     User.find(function (err, users) {
         if (err) {
             console.log(err);
@@ -84,9 +64,9 @@ app.get("/users", allowCors((req, res) => {
     });
 
     console.log("Users fetched");
-}));
+});
 
-app.post("/users", allowCors((req, res) => {
+app.post("/users", (req, res) => {
     const user = new User({
         fullName: req.body.fullName,
         email: req.body.email,
@@ -106,9 +86,9 @@ app.post("/users", allowCors((req, res) => {
     });
     user.save();
     console.log("User saved");
-}));
+});
 
-app.get("/users/:infoID", allowCors((req, res) => {
+app.get("/users/:infoID", (req, res) => {
     User.findOne({_id: req.params.infoID}, function(err, foundUser){
         if(foundUser){
             res.send(foundUser);
@@ -117,15 +97,18 @@ app.get("/users/:infoID", allowCors((req, res) => {
             res.send("No User Found");
         }
     });
-}));
+});
 
-app.get("/qrcode", allowCors((req, res) =>{
+app.get("/qrcode", (req, res) =>{
     QRCode.toDataURL ('https://qr-info-client.vercel.app/userinfo',{scale: "10"}, function (err, url){
                 if(err) throw err
                 res.send(url)
     });
     console.log("QR fetched");
-}));
+});
 
-// Rest of the code remains unchanged
-// ...
+// QRCode.toDataURL('http://localhost:3000/userinfo', function (err, url) {
+//   if (err) throw err
+//   console.log(url)
+// })
+
