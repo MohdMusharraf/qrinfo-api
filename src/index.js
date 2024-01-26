@@ -6,13 +6,15 @@ import cors from "cors";
 import dotenv from "dotenv";
 import QRCode from "qrcode";
 
+app.use(cors());
+
 const server = http.createServer(app);
 
 dotenv.config({ path: './config.env'});
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+
 
 app.get("/", (req, res) => {
     res.send("Hello to QR Code Generator API");
@@ -101,6 +103,18 @@ app.get("/qrcode", (req, res) =>{
                 res.send(url)
     });
     console.log("QR fetched");
+});
+
+app.delete("/users", (req, res) => {
+    User.deleteMany(function (err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(users);
+        }
+    });
+
+    console.log("All Users Deleted");
 });
 
 // QRCode.toDataURL('http://localhost:3000/userinfo', function (err, url) {
