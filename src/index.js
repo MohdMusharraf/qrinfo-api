@@ -1,4 +1,5 @@
 import http from "http";
+import express from "express";
 import app from "./app.js";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
@@ -6,7 +7,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import QRCode from "qrcode";
 
+const app = express();
+app.use(express.json());
 app.use(cors());
+
 
 const server = http.createServer(app);
 
