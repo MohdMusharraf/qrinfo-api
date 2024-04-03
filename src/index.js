@@ -98,7 +98,7 @@ app.get("/users/:infoID", (req, res) => {
 });
 
 app.get("/qrcode", (req, res) =>{
-    QRCode.toDataURL ('http://64.227.155.112:3000//userinfo',{scale: "10"}, function (err, url){
+    QRCode.toDataURL ('http://64.227.155.112:3000/userinfo',{scale: "10"}, function (err, url){
                 if(err) throw err
                 res.send(url)
     });
