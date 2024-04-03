@@ -6,7 +6,11 @@ import cors from "cors";
 import dotenv from "dotenv";
 import QRCode from "qrcode";
 
-app.use(cors());
+app.use(cors(
+    {
+        origin: 'http://139.59.39.23:3000'
+    }
+));
 
 const server = http.createServer(app);
 
